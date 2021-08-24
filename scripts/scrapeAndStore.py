@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+from transformers import pipeline
+summarizer = pipeline("summarization")
+
 # Used for creating a connection to the database
 import psycopg2
 
@@ -32,6 +35,9 @@ def fromURLToMarkdown(URL, currentProfile, MDFilePath="./"):
     printDebug("Generating tags")
     # Generate the tags
     articleTags = OSINTtext.generateTags(OSINTtext.cleanText(articleClearText))
+
+    printDebug("Generating summarization")
+    articleSummary = OSINTtext.summarizeText(OSINTtext.cleanAndGroupText(articleClearText), summarizer)
 
     printDebug("Creating the markdown file")
     # Create the markdown file
